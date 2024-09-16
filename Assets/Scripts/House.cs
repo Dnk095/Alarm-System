@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class House : MonoBehaviour
 {
-    [SerializeField] private AlarmSystem _alarmSystem;
+    [SerializeField] private Signalization _alarmSystem;
     [SerializeField] private AlarmTrigger _trigger;
 
     private bool _isSignal = false;
