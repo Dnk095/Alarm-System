@@ -7,8 +7,6 @@ public class AlarmSystem : MonoBehaviour
 
     private Coroutine _coroutine;
 
-    private float _volume = -0.05f;
-
     private bool _isSignalized = false;
 
     private void Awake()
@@ -18,31 +16,53 @@ public class AlarmSystem : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        _isSignalized = !_isSignalized;
-        _volume = -_volume;
+        if (other.TryGetComponent(out Thief thief))
+            _isSignalized = !_isSignalized;
 
-        if (_isSignalized)
-        {
-            _coroutine ??= StartCoroutine(ChangeValue());
-
-            _alarm.Play();
-        }
-        else if (_alarm.volume == 0)
-        {
-            StopCoroutine(_coroutine);
-            _alarm.Stop();
-        }
+        if (_isSignalized == true)
+            StartAlarm();
+        else
+            StopAlarm();
     }
 
-    private IEnumerator ChangeValue()
+    private void StartAlarm()
     {
+        if (_coroutine != null)
+            StopCoroutine(_coroutine);
+
+        _coroutine = StartCoroutine(ChangeValue(0.05f));
+
+        _alarm.Play();
+    }
+
+    private void StopAlarm()
+    {
+        StopCoroutine(_coroutine);
+
+        _coroutine = StartCoroutine(ChangeValue(-0.05f));
+    }
+
+    private IEnumerator ChangeValue(float volume)
+    {
+        bool isWorking = true;
+
         WaitForSeconds wait = new(0.1f);
 
-        while (enabled)
+        while (isWorking)
         {
-            _alarm.volume += _volume;
+            _alarm.volume += volume;
 
             yield return wait;
+
+            if (_alarm.volume == 0)
+            {
+                _alarm.Stop();
+                isWorking = false;
+            }
+            else if(_alarm.volume == 1)
+            {
+                isWorking = false;
+            }
         }
     }
 }
