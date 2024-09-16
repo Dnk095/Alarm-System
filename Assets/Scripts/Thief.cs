@@ -10,7 +10,7 @@ public class Thief : MonoBehaviour
     private void Update()
     {
         if (transform.position == _targets[_currentPosition].position)
-            _currentPosition = (_currentPosition + 1) % _targets.Length;
+            _currentPosition = ++_currentPosition % _targets.Length;
 
         transform.position = Vector3.MoveTowards(transform.position, _targets[_currentPosition].position, _speed * Time.deltaTime);
     }
