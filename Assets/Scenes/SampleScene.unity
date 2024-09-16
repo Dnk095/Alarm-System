@@ -1046,7 +1046,7 @@ MonoBehaviour:
   _targets:
   - {fileID: 1086881445}
   - {fileID: 17499982}
-  _speed: 3
+  _speed: 5
 --- !u!135 &1306682956
 SphereCollider:
   m_ObjectHideFlags: 0
